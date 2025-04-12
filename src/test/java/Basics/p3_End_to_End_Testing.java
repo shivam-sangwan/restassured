@@ -10,6 +10,7 @@ import payload.Payload;
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
+import io.restassured.response.ResponseBody;
 
 public class p3_End_to_End_Testing {
 
@@ -27,6 +28,35 @@ public class p3_End_to_End_Testing {
 		.when().post("/maps/api/place/add/json")
 		.then().extract().response();
 		
+		//validating responsetime
+		Long tm = response.time();
+		Assert.assertTrue(tm<2000);
+		
+		//statuscode
+		int stcode = response.getStatusCode();
+		Assert.assertEquals(200,stcode);
+		
+		//header
+		String head = response.getHeader("content-type");
+		Assert.assertEquals("application/json",head);
+		
+		String head2 = response.getHeader("Authorization");
+		Assert.assertEquals("token",head2);
+		
+		//cookies
+		String cook = response.getCookie("cookie name");
+		Assert.assertEquals("cookie value",cook);
+		
+		//responsebody
+		ResponseBody body = response.getBody();
+		System.out.println(body.asString());  //prints enrire response
+		
+		
+		
+		
+		
+		
+		//extracting placeid
 		String place_id = testBase.getJsonPath(response,"place_id");
 		String newaddress = "70 winter walk, USA";
 		
@@ -42,8 +72,7 @@ public class p3_End_to_End_Testing {
 		
 		//get the place using 'get' method and check if updated address is present there
 		
-		//note: as for get method we are not using any body so we also won't use any header
-		//..no body means no header
+
 		//First method of validating updated address
 		given().log().all().queryParam("key", "qaclick123").queryParam("place_id", place_id)
 	    .when().get("/maps/api/place/get/json")
