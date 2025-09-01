@@ -66,7 +66,7 @@ public class p3_End_to_End_Testing {
 		//'newaddress' ref. variable is used to avoid hard coding in body
 		.body(Payload.updatePlace(place_id, newaddress)) 
 		.when().put("/maps/api/place/update/json")
-		.then().log().all().assertThat().statusCode(200)
+		.then().log().all().statusCode(200)
 		.body("msg", equalTo("Address successfully updated"));
 		
 		
@@ -82,7 +82,7 @@ public class p3_End_to_End_Testing {
 		//2nd method of validating updated address
 		Response response2 = given().log().all().queryParam("key", "qaclick123").queryParam("place_id", place_id)
 	    .when().get("/maps/api/place/get/json")
-	    .then().log().all().assertThat().statusCode(200).extract().response();	    
+	    .then().log().all().statusCode(200).extract().response();	    
 	    
 		String actualaddress = testBase.getJsonPath(response2,"address");
 	    Assert.assertEquals(newaddress, actualaddress);
