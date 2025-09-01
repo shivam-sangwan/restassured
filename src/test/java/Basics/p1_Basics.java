@@ -22,12 +22,13 @@ public class p1_Basics {
 		RestAssured.baseURI = "https://rahulshettyacademy.com";
 		
 		//given,when,then
-		given().relaxedHTTPSValidation().queryParam("key", "qaclick123").log().all()
+		given().relaxedHTTPSValidation().queryParam("key", "qaclick123")
         //relaxedHTTPSValidation(): to access site(which require ssl certificate) without ssl certificate
 		.header("Content-Type","application/json")
 		.body(Payload.addPlace())
+		.log().all()
 		.when().post("/maps/api/place/add/json")
-		.then().log().all().assertThat().statusCode(200)
+		.then().log().all().statusCode(200)
 		.body("scope", equalTo("APP"))
 		.header("Server", "Apache/2.4.52 (Ubuntu)");
 		               
