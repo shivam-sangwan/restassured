@@ -22,7 +22,7 @@ public class p1_Basics {
 		RestAssured.baseURI = "https://rahulshettyacademy.com";
 		
 		//given,when,then
-		given().relaxedHTTPSValidation().log().all().queryParam("key", "qaclick123")
+		given().relaxedHTTPSValidation().queryParam("key", "qaclick123").log().all()
         //relaxedHTTPSValidation(): to access site(which require ssl certificate) without ssl certificate
 		.header("Content-Type","application/json")
 		.body(Payload.addPlace())
