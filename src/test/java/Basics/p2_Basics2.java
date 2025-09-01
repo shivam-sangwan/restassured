@@ -18,20 +18,21 @@ public class p2_Basics2 {
 		RestAssured.baseURI = "https://rahulshettyacademy.com";
 		
 		//given,when,then
-		String response = given().log().all().queryParam("key", "qaclick123")
+		Response response = given().queryParam("key", "qaclick123")
 	    .header("Content-Type","application/json")
 		.body(Payload.addPlace())
+	    .log().all()
 		.when().post("/maps/api/place/add/json")
-		.then().assertThat().statusCode(200).extract().response().asString();
+		.then().statusCode(200).extract().response();
 		
-		System.out.println(response);
+		System.out.println(response.asString());
 		
 		
 		//extracting a parameter(ex: placeId) from response using jsonpath..
 		//...this will be used in get/put/delete requests
 		
 		
-		JsonPath js = new JsonPath(response); 
+		JsonPath js = new JsonPath(response.asString()); 
 		//jsonpath: takes response in form of string and convert to json
 		//alternative of xpath for JSON
 		
