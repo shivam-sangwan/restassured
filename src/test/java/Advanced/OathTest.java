@@ -18,7 +18,14 @@ public class OathTest {
 	{
 		//accessing "AS" to get access token
 		RestAssured.baseURI = "https://rahulshettyacademy.com/oauthapi/oauth2/resourceOwner/token";
+
 		
+		//here we used formparam() instead of queryparam() to send parameters
+		//formparam(): send parameters as part of body
+		//queryparam(): send parameters as part of url
+		//whether to use formparam()/queryparam() depends on how API is designed...
+		//..some API expects parameters(ex: credentials) in body and some in URL
+		//wese, formparam() is considered more secure as parameters are in body and not in URL(exposed)
 		Response res = given().log().all()
 		.formParam("client_id", "692183103107-p0m7ent2hk7suguv4vq22hjcfhcr43pj.apps.googleusercontent.com")
 		.formParam("client_secret", "erZOWM9g3UtwNRj340YYaK_W")
