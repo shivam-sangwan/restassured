@@ -62,12 +62,12 @@ public class OathTestResponse {
 	    //scenario2: extract price of "SoapUI Webservices testing" courseTitle from response
 	    
 	    //getCourses() is giving us the object of courses class, using which we are..
-	    //..calling getApi() which returns list of elements of 'api array'
+	    //..calling getApi() which returns list of objects of 'Api pojo class'
 	    
 	    List<Api> api = gc.getCourses().getApi();
 	    
-	  //..using get(i) method of list we accessed ith element of 'api array' of response
-	    //..and then we accessed CourseTitle using getCourseTitle() from ith element of 'api array'
+	  //..using get(i) method of list we accessed ith element of APi list (which is ith object of 'Api pojo class')
+	    //..and then we accessed CourseTitle using getCourseTitle() method of 'Api pojo class'
 	    for(int i=0;i<api.size();i++)
 	    {
 	    	String title = api.get(i).getCourseTitle();
