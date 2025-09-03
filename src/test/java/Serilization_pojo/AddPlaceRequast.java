@@ -46,13 +46,13 @@ public class AddPlaceRequast {
 		
 		
 		//given,when,then
-		String response = given().log().all().queryParam("key", "qaclick123")
+		Response response = given().log().all().queryParam("key", "qaclick123")
 	    .header("Content-Type","application/json")
 		.body(ap)  //restAssured will automaticaly convert this object into request payload(serialization)
 		.when().post("/maps/api/place/add/json")
-		.then().assertThat().statusCode(200).extract().response().asString();
+		.then().assertThat().statusCode(200).extract().response();
 		
-		System.out.println(response);
+		System.out.println(response.asString());
 		
 		
 	}
