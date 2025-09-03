@@ -10,6 +10,9 @@ import payload.Payload;
 public class p1_Basics {
 
 	public static void main(String[] args) {
+
+
+		//skip Library_API and Ecommerce_EndToEndTesting folders
 		//use details from "first api contract" file
 		//validate add place API response i.e. post method response
 		
