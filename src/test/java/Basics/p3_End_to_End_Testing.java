@@ -21,7 +21,7 @@ public class p3_End_to_End_Testing {
 	
 		RestAssured.baseURI = "https://rahulshettyacademy.com";
 		
-		//given,when,then
+		//1: post api
 		Response response = given().log().all().queryParam("key", "qaclick123")
 	    .header("Content-Type","application/json")
 		.body(Payload.addPlace())
@@ -56,36 +56,50 @@ public class p3_End_to_End_Testing {
 		
 		
 		
-		//extracting placeid
+		//extracting placeid and token
 		String place_id = testBase.getJsonPath(response,"place_id");
-		String newaddress = "70 winter walk, USA";
+		String token = testBase.getJsonPath(response,"token");
+		up.setSddress("newaddress")  //suppose up is object of pojo class and we are updating address here
 		
-		given().log().all().queryParam("key", "qaclick123")
+
+		//2: update api
+		Response res2 = given().log().all()
 		.header("Content-Type","application/json")
-		//note: in body "place_id" of above response is used.
-		//'newaddress' ref. variable is used to avoid hard coding in body
-		.body(Payload.updatePlace(place_id, newaddress)) 
-		.when().put("/maps/api/place/update/json")
-		.then().log().all().statusCode(200)
-		.body("msg", equalTo("Address successfully updated"));
+		.header("authorization",token)
+		.pathParams("placeid", place_id)
+		//note: in pathparams() "place_id" of above response is used.
+		.body(up) //passing pojo object with updated address
+		.when().put("/maps/api/{placeid}/update/json")  //place_id from pathparams will get populated here
+		.then().log().all().statusCode(200).extract().response();
+
+		String msg = testBase.getJsonPath(response,"msg");
+		Assert.assertEquals(msg, "address updated successfully");
 		
-		
+
+		//3: get api
 		//get the place using 'get' method and check if updated address is present there
 		
 
 		//First method of validating updated address
-		given().log().all().queryParam("key", "qaclick123").queryParam("place_id", place_id)
+		Response res3 = given().log().all().queryParam("key", "qaclick123").queryParam("place_id", place_id)
+		.header("authorization",token)
 	    .when().get("/maps/api/place/get/json")
-	    .then().log().all().assertThat().statusCode(200)
-	    .body("address", equalTo("70 winter walk, USA"));
+	    .then().log().all().statusCode(200).extract().response();
+
+
+		String address = testBase.getJsonPath(response,"address");
+		Assert.assertEquals(address, "70 winter walk, USA");
 		
-		//2nd method of validating updated address
-		Response response2 = given().log().all().queryParam("key", "qaclick123").queryParam("place_id", place_id)
-	    .when().get("/maps/api/place/get/json")
-	    .then().log().all().statusCode(200).extract().response();	    
-	    
-		String actualaddress = testBase.getJsonPath(response2,"address");
-	    Assert.assertEquals(newaddress, actualaddress);
+		//4: delete api
+		Response res4 = given().log().all().queryParam("key", "qaclick123")
+		.header("authorization",token)
+		.pathParams("placeid", place_id)
+	    .when().delete("/maps/api/{placeid}/get/json")
+	    .then().log().all().statusCode(200).extract().response();
+
+
+		String msg = testBase.getJsonPath(response,"msg");
+		Assert.assertEquals(msg, "api deleted successfully");
 	}
 
 }
