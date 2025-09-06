@@ -53,6 +53,45 @@ public class AddPlaceRequast {
 		.then().assertThat().statusCode(200).extract().response();
 		
 		System.out.println(response.asString());
+
+		/* new pojo example
+  
+		json part is addplace json:
+	    types [
+		{
+			"aa"
+			"bb"
+				}
+		]  
+  
+        addplcae pojo part:
+
+        public class addplace {
+		    private List<Types> types;
+	  }
+
+      types pojo:
+
+      public class types {
+	       private string s1;
+		   private string s2;
+	 }
+
+      test case:
+
+        adplace ap = new addplace();
+
+        Types ty = new Types();
+		ty.sets1("aa")
+        ty.sets2("bb")
+
+        List<Types> types = new Arraylist();
+		types.add(ty);
+
+        ap.setTypes(types);
+        */
+		
+		
 		
 		
 	}
